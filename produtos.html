@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Produtos</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 40px;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 300px;
+        }
+
+        th,
+        td {
+            border: 1px solid #ccc;
+            padding: 8px;
+            text-align: left;
+        }
+    </style>
+</head>
+
+<body>
+    <p><a href="/">&larr; Voltar</a></p>
+    <h1>Lista de Produtos</h1>
+    <table>
+        <tr>
+            <th>Nome</th>
+            <th>Preço</th>
+        </tr>
+        {% for p in produtos %}
+        <tr>
+            <td>{{ p.nome }}</td>
+            <td>R$ {{ p.preco }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+
+</html>
