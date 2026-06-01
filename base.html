@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ titulo }} - Admin</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body class="bg-gray-100 font-sans antialiased">
+    <div class="flex h-screen overflow-hidden">
+
+        <div class="w-64 bg-gray-900 text-white flex flex-col justify-between shadow-xl">
+            <div>
+                <div
+                    class="p-5 text-2xl font-bold tracking-wider text-blue-400 flex items-center gap-3 border-b border-gray-800">
+                    <i class="fa-solid fa-shop"></i> E-commerce
+                </div>
+                <nav class="mt-6 px-4">
+                    <a href="/"
+                        class="flex items-center gap-3 px-4 py-3 rounded-lg mb-2 transition hover:bg-gray-800 text-gray-300">
+                        <i class="fa-solid fa-chart-pie w-5 text-blue-400"></i> Dashboard
+                    </a>
+                    <a href="/produtos"
+                        class="flex items-center gap-3 px-4 py-3 rounded-lg mb-2 transition hover:bg-gray-800 text-gray-300">
+                        <i class="fa-solid fa-box w-5 text-yellow-400"></i> Produtos
+                    </a>
+                    <a href="/clientes"
+                        class="flex items-center gap-3 px-4 py-3 rounded-lg mb-2 transition hover:bg-gray-800 text-gray-300">
+                        <i class="fa-solid fa-users w-5 text-purple-400"></i> Clientes
+                    </a>
+                    <a href="/vendas"
+                        class="flex items-center gap-3 px-4 py-3 rounded-lg mb-2 transition hover:bg-gray-800 text-gray-300">
+                        <i class="fa-solid fa-cart-shopping w-5 text-green-400"></i> Nova Venda
+                    </a>
+                    <a href="/relatorios"
+                        class="flex items-center gap-3 px-4 py-3 rounded-lg mb-2 transition hover:bg-gray-800 text-gray-300">
+                        <i class="fa-solid fa-file-invoice-dollar w-5 text-red-400"></i> Relatórios
+                    </a>
+                </nav>
+            </div>
+            <div class="p-4 border-t border-gray-800 text-xs text-gray-500 text-center">Painel Realtime &copy; 2026
+            </div>
+        </div>
+
+        <div class="flex-1 flex flex-col overflow-y-auto">
+            <header class="bg-white shadow-sm px-8 py-4 flex justify-between items-center border-b border-gray-200">
+                <h1 class="text-xl font-bold text-gray-800">{{ titulo }}</h1>
+                <div class="text-sm text-gray-600">Modo: <span
+                        class="bg-green-100 text-green-800 px-2 py-1 rounded-full font-bold text-xs">Tempo Real</span>
+                </div>
+            </header>
+
+            <main class="p-8">
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+                    <div
+                        class="bg-white p-5 rounded-xl shadow-sm border border-gray-200 flex items-center justify-between">
+                        <div>
+                            <p class="text-xs text-gray-400 font-bold uppercase tracking-wider">Faturamento</p>
+                            <p class="text-xl font-black text-gray-800 mt-1">R$ {total_faturamento:,.2f}</p>
+                        </div>
+                        <div
+                            class="w-10 h-10 bg-green-100 text-green-600 rounded-lg flex items-center justify-center text-lg">
+                            <i class="fa-solid fa-dollar-sign"></i>
+                        </div>
+                    </div>
+                    <div
+                        class="bg-white p-5 rounded-xl shadow-sm border border-gray-200 flex items-center justify-between">
+                        <div>
+                            <p class="text-xs text-gray-400 font-bold uppercase tracking-wider">Vendas Realizadas</p>
+                            <p class="text-xl font-black text-gray-800 mt-1">{qtd_vendas}</p>
+                        </div>
+                        <div
+                            class="w-10 h-10 bg-blue-100 text-blue-600 rounded-lg flex items-center justify-center text-lg">
+                            <i class="fa-solid fa-bag-shopping"></i>
+                        </div>
+                    </div>
+                    <div
+                        class="bg-white p-5 rounded-xl shadow-sm border border-gray-200 flex items-center justify-between">
+                        <div>
+                            <p class="text-xs text-gray-400 font-bold uppercase tracking-wider">Clientes</p>
+                            <p class="text-xl font-black text-gray-800 mt-1">{qtd_clientes}</p>
+                        </div>
+                        <div
+                            class="w-10 h-10 bg-purple-100 text-purple-600 rounded-lg flex items-center justify-center text-lg">
+                            <i class="fa-solid fa-users"></i>
+                        </div>
+                    </div>
+                    <div
+                        class="bg-white p-5 rounded-xl shadow-sm border border-gray-200 flex items-center justify-between">
+                        <div>
+                            <p class="text-xs text-gray-400 font-bold uppercase tracking-wider">Produtos no Catálogo</p>
+                            <p class="text-xl font-black text-gray-800 mt-1">{qtd_produtos}</p>
+                        </div>
+                        <div
+                            class="w-10 h-10 bg-yellow-100 text-yellow-600 rounded-lg flex items-center justify-center text-lg">
+                            <i class="fa-solid fa-box"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white p-6 rounded-xl shadow-md border border-gray-200">
+                    {conteudo_html}
+                </div>
+            </main>
+        </div>
+    </div>
+</body>
+
+</html>
+""", titulo=titulo)
+
+
+# --- ROTAS DO SISTEMA ---
+
+@app.route('/')
+def index():
+html = """
+<div class="text-center py-10">
+    <h2 class="text-2xl font-black text-gray-800 mb-2">Bem-vindo ao seu painel em branco!</h2>
+    <p class="text-gray-500 max-w-md mx-auto">Nenhum dado mockado. Use o menu lateral para cadastrar seus produtos,
+        clientes e simular vendas reais.</p>
+    <div class="mt-6 flex justify-center gap-4">
+        <a href="/produtos"
+            class="bg-blue-600 hover:bg-blue-700 text-white font-bold px-4 py-2 rounded-lg text-sm shadow transition">Cadastrar
+            Primeiro Produto</a>
+    </div>
+</div>
+"""
+return layout_base("Dashboard", html)
+
+
+@app.route('/clientes', methods=['GET', 'POST'])
+def clientes():
+if request.method == 'POST':
+nome = request.form.get('nome')
+email = request.form.get('email')
+if nome and email:
+DADOS_SISTEMA["clientes"].append({"nome": nome, "email": email})
+return redirect(url_for('clientes'))
+
+# Gera as linhas da tabela
+linhas = ""
+for c in DADOS_SISTEMA["clientes"]:
+linhas += f"<tr>
+    <td class='p-3 border-b text-gray-700 font-medium'>{c['nome']}</td>
+    <td class='p-3 border-b text-gray-500'>{c['email']}</td>
+</tr>"
+
+if not DADOS_SISTEMA["clientes"]:
+linhas = "<tr>
+    <td colspan='2' class='p-4 text-center text-gray-400 italic'>Nenhum cliente cadastrado ainda.</td>
+</tr>"
+
+html = f"""
+<h2 class="text-lg font-bold text-gray-800 mb-4"><i class="fa-solid fa-user-plus text-purple-500 mr-2"></i>Cadastrar
+    Novo Cliente</h2>
+<form method="POST" class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8 items-end bg-gray-50 p-4 rounded-lg">
+    <div>
+        <label class="block text-xs font-bold text-gray-600 uppercase mb-1">Nome Completo</label>
+        <input type="text" name="nome" required
+            class="w-full p-2 border rounded border-gray-300 focus:outline-blue-500 text-sm"
+            placeholder="Ex: João Silva">
+    </div>
+    <div>
+        <label class="block text-xs font-bold text-gray-600 uppercase mb-1">E-mail</label>
+        <input type="email" name="email" required
+            class="w-full p-2 border rounded border-gray-300 focus:outline-blue-500 text-sm"
+            placeholder="joao@email.com">
+    </div>
+    <button type="submit"
+        class="bg-purple-600 hover:bg-purple-700 text-white font-bold p-2 rounded text-sm transition shadow">Adicionar
+        Cliente</button>
+</form>
+
+<h3 class="text-md font-bold text-gray-800 mb-2">Clientes Cadastrados</h3>
+<table class="w-full text-left border-collapse">
+    <thead>
+        <tr class="bg-gray-100 text-xs font-bold text-gray-600 uppercase">
+            <th class="p-3 border-b">Nome</th>
+            <th class="p-3 border-b">E-mail</th>
+        </tr>
+    </thead>
+    <tbody>{linhas}</tbody>
+</table>
+"""
+return layout_base("Gerenciamento de Clientes", html)
+
+
+@app.route('/produtos', methods=['GET', 'POST'])
+def produtos():
+if request.method == 'POST':
+nome = request.form.get('nome')
+preco = request.form.get('preco')
+if nome and preco:
+DADOS_SISTEMA["produtos"].append({"nome": nome, "preco": float(preco)})
+return redirect(url_for('produtos'))
+
+linhas = ""
+for p in DADOS_SISTEMA["produtos"]:
+linhas += f"<tr>
+    <td class='p-3 border-b text-gray-700 font-medium'>{p['nome']}</td>
+    <td class='p-3 border-b text-gray-900 font-bold'>R$ {p['preco']:.2f}</td>
+</tr>"
+
+if not DADOS_SISTEMA["produtos"]:
+linhas = "<tr>
+    <td colspan='2' class='p-4 text-center text-gray-400 italic'>Nenhum produto em estoque.</td>
+</tr>"
+
+html = f"""
+<h2 class="text-lg font-bold text-gray-800 mb-4"><i class="fa-solid fa-box-open text-yellow-500 mr-2"></i>Adicionar
+    Produto ao Catálogo</h2>
+<form method="POST" class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8 items-end bg-gray-50 p-4 rounded-lg">
+    <div>
+        <label class="block text-xs font-bold text-gray-600 uppercase mb-1">Nome do Produto</label>
+        <input type="text" name="nome" required
+            class="w-full p-2 border rounded border-gray-300 focus:outline-blue-500 text-sm"
+            placeholder="Ex: Mouse Sem Fio">
+    </div>
+    <div>
+        <label class="block text-xs font-bold text-gray-600 uppercase mb-1">Preço de Venda (R$)</label>
+        <input type="number" step="0.01" name="preco" required
+            class="w-full p-2 border rounded border-gray-300 focus:outline-blue-500 text-sm" placeholder="0.00">
+    </div>
+    <button type="submit"
+        class="bg-yellow-500 hover:bg-yellow-600 text-gray-900 font-black p-2 rounded text-sm transition shadow">Cadastrar
+        Produto</button>
+</form>
+
+<h3 class="text-md font-bold text-gray-800 mb-2">Produtos em Estoque</h3>
+<table class="w-full text-left border-collapse">
+    <thead>
+        <tr class="bg-gray-100 text-xs font-bold text-gray-600 uppercase">
+            <th class="p-3 border-b">Produto</th>
+            <th class="p-3 border-b">Preço</th>
+        </tr>
+    </thead>
+    <tbody>{linhas}</tbody>
+</table>
+"""
+return layout_base("Controle de Produtos", html)
+
+
+@app.route('/vendas', methods=['GET', 'POST'])
+def vendas():
+if request.method == 'POST':
+cliente_idx = request.form.get('cliente_idx')
+produto_idx = request.form.get('produto_idx')
+qtd = request.form.get('qtd')
+
+if cliente_idx is not None and produto_idx is not None and qtd:
+cliente = DADOS_SISTEMA["clientes"][int(cliente_idx)]
+produto = DADOS_SISTEMA["produtos"][int(produto_idx)]
+total = produto["preco"] * int(qtd)
+
+DADOS_SISTEMA["vendas"].append({
+"cliente": cliente["nome"],
+"produto": produto["nome"],
+"qtd": int(qtd),
+"total": total
+})
+return redirect(url_for('vendas'))
+
+# Opções do select de clientes
+opt_clientes = "".join([f"<option value='{i}'>{c['nome']}</option>" for i, c in enumerate(DADOS_SISTEMA["clientes"])])
+# Opções do select de produtos
+opt_produtos = "".join([f"<option value='{i}'>{p['nome']} (R$ {p['preco']:.2f})</option>" for i, p in
+enumerate(DADOS_SISTEMA["produtos"])])
+
+linhas = ""
+for v in DADOS_SISTEMA["vendas"]:
+linhas += f"<tr>
+    <td class='p-3 border-b text-sm text-gray-700'>{v['cliente']}</td>
+    <td class='p-3 border-b text-sm text-gray-600'>{v['produto']} (x{v['qtd']})</td>
+    <td class='p-3 border-b text-sm font-bold text-green-600'>R$ {v['total']:.2f}</td>
+</tr>"
+
+if not DADOS_SISTEMA["vendas"]:
+linhas = "<tr>
+    <td colspan='3' class='p-4 text-center text-gray-400 italic'>Nenhuma venda realizada.</td>
+</tr>"
+
+# Se não houver clientes ou produtos cadastrados, bloqueia o formulário de vendas
+if not DADOS_SISTEMA["clientes"] or not DADOS_SISTEMA["produtos"]:
+formulario = "<div class='bg-red-50 text-red-700 p-4 rounded-lg border border-red-200 text-sm font-semibold mb-6'><i
+        class='fa-solid fa-triangle-exclamation mr-2'></i> Atenção: Você precisa cadastrar pelo menos um Cliente e um
+    Produto antes de registrar uma venda.</div>"
+else:
+formulario = f"""
+<form method="POST" class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8 items-end bg-gray-50 p-4 rounded-lg">
+    <div>
+        <label class="block text-xs font-bold text-gray-600 uppercase mb-1">Selecionar Cliente</label>
+        <select name="cliente_idx"
+            class="w-full p-2 border rounded border-gray-300 bg-white text-sm focus:outline-blue-500">{opt_clientes}</select>
+    </div>
+    <div>
+        <label class="block text-xs font-bold text-gray-600 uppercase mb-1">Selecionar Produto</label>
+        <select name="produto_idx"
+            class="w-full p-2 border rounded border-gray-300 bg-white text-sm focus:outline-blue-500">{opt_produtos}</select>
+    </div>
+    <div>
+        <label class="block text-xs font-bold text-gray-600 uppercase mb-1">Quantidade</label>
+        <input type="number" min="1" value="1" name="qtd" required
+            class="w-full p-2 border rounded border-gray-300 text-sm focus:outline-blue-500">
+    </div>
+    <button type="submit"
+        class="bg-green-600 hover:bg-green-700 text-white font-bold p-2 rounded text-sm transition shadow">Lançar
+        Transação</button>
+</form>
+"""
+
+html = f"""
+<h2 class="text-lg font-bold text-gray-800 mb-4"><i class="fa-solid fa-cart-plus text-green-500 mr-2"></i>Registrar Nova
+    Venda</h2>
+{formulario}
+
+<h3 class="text-md font-bold text-gray-800 mb-2">Histórico Recente</h3>
+<table class="w-full text-left border-collapse">
+    <thead>
+        <tr class="bg-gray-100 text-xs font-bold text-gray-600 uppercase">
+            <th class="p-3 border-b">Cliente</th>
+            <th class="p-3 border-b">Itens</th>
+            <th class="p-3 border-b">Total</th>
+        </tr>
+    </thead>
+    <tbody>{linhas}</tbody>
+</table>
+"""
+return layout_base("Módulo de PDV / Vendas", html)
+
+
+@app.route('/relatorios')
+def relatorios():
+total_faturamento = sum(v["total"] for v in DADOS_SISTEMA["vendas"])
+
+html = f"""
+<h2 class="text-lg font-bold text-gray-800 mb-2"><i class="fa-solid fa-chart-line text-red-500 mr-2"></i>Fechamento de
+    Caixa</h2>
+<p class="text-sm text-gray-500 mb-6">Métricas calculadas em tempo de execução com base nos formulários preenchidos.</p>
+
+<div class="bg-gray-900 text-white p-6 rounded-xl max-w-sm shadow-inner">
+    <span class="text-xs font-bold text-gray-400 uppercase tracking-widest">Saldo Bruto Atual</span>
+    <h3 class="text-3xl font-black text-green-400 mt-2">R$ {total_faturamento:,.2f}</h3>
+    <hr class="border-gray-800 my-4">
+    <div class="flex justify-between text-xs text-gray-400">
+        <span>Operações efetuadas:</span>
+        <span class="font-bold text-white">{len(DADOS_SISTEMA["vendas"])}</span>
+    </div>
+</div>
+"""
+return layout_base("Relatórios Comerciais", html)
+
+
+if __name__ == '__main__':
+app.run(debug=True, port=5000)
